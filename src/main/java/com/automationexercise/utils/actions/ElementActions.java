@@ -3,6 +3,7 @@ package com.automationexercise.utils.actions;
 import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
 
@@ -101,6 +102,22 @@ public class ElementActions {
                     }
                 }
         );
+    }
+
+    //select from dropdown
+    public void selectFromDropDown (By locator, String value){
+        waitBot.fluentWait().until(d ->{
+           try {
+               WebElement dropdown = d.findElement(locator);
+               scrollToElementJS(locator);
+               Select select = new Select(dropdown);
+               select.selectByVisibleText(value);
+               LogsManager.info("Selected value '" + value + "' from dropdown: " + locator);
+               return true;
+           }catch (Exception e){
+               return false;
+           }
+        });
     }
 
 }
