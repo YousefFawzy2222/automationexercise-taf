@@ -13,7 +13,7 @@ public class SignupPage {
 
 
     //Locators
-    private final By name = By.cssSelector("data-qa='name'");
+    private final By name = By.cssSelector("[data-qa='name']");
     private final By email = By.cssSelector("[data-qa='email']");
     private final By password = By.id("password");
     private final By dayOfBirth = By.id("days");
@@ -47,8 +47,6 @@ public class SignupPage {
     }
     @Step("Fill Registration Form")
     public SignupPage fillRegistrationForm(String title,
-                                           String name,
-                                           String email,
                                            String passwordText,
                                            String dayText,
                                            String monthText,
@@ -64,8 +62,6 @@ public class SignupPage {
                                            String zipcodeText,
                                            String mobileNumberText){
         choseTitle(title);
-        driver.element().type(this.name,name);
-        driver.element().type(this.email, email);
         driver.element().selectFromDropDown(dayOfBirth, dayText);
         driver.element().selectFromDropDown(monthOfBirth, monthText);
         driver.element().selectFromDropDown(yearOfBirth, yearText);

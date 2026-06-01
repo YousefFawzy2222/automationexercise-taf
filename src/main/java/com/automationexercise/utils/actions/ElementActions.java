@@ -77,7 +77,7 @@ public class ElementActions {
     public void scrollToElementJS(By locator){
         ((JavascriptExecutor) driver)
                 .executeScript("""
-                        arguments[0].scrollIntoView({behaviour:"auto",block:"center",inline:"center"}});""", findElement(locator)); // scrolls to the element using js to be viewed in the viewport
+                        arguments[0].scrollIntoView({behavior:"auto", block:"center", inline:"center"});""", findElement(locator)); // Scrolls the element into the center of the viewport using JavaScript
     }
 
     //find an element

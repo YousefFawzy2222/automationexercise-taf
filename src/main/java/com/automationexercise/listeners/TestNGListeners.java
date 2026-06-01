@@ -30,9 +30,6 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         createTestOutputDirectories();
         LogsManager.info("Test output directories created");
 
-        PropertyReader.loadProperties();
-        LogsManager.info("Properties files loaded");
-
         AllureEnvironmentManager.setAllureEnvironment();
         LogsManager.info("Allure environment set");
 
@@ -110,7 +107,7 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
         FileUtils.cleanDirectory(AllureConstant.RESULTS_FOLDER.toFile());
         FileUtils.cleanDirectory(new File(ScreenshotsManager.SCREENSHOTS_PATH));
         FileUtils.cleanDirectory(new File(ScreenRecordManager.RECORDINGS_PATH));
-        FileUtils.cleanDirectory(new File(LogsManager.LOGS_PATH));
+        FileUtils.forceDeleteFile(new File(LogsManager.LOGS_PATH+ File.separator +  "test.log"));
 
     }
 
