@@ -1,13 +1,12 @@
-package com.automationexercise.tests;
+package com.automationexercise.tests.ui;
 
 import com.automationexercise.apis.UserManagementApi;
 import com.automationexercise.drivers.GUIDriver;
 import com.automationexercise.pages.SignupLoginPage;
 import com.automationexercise.pages.SignupPage;
 import com.automationexercise.pages.components.NavigationBarComponent;
+import com.automationexercise.tests.BaseTest;
 import com.automationexercise.utils.TimeManager;
-import com.automationexercise.utils.dataReader.JsonReader;
-import com.automationexercise.utils.dataReader.PropertyReader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -19,11 +18,14 @@ public class RegisterTest extends BaseTest {
     //Tests
     @Test
     public void validSignUpTC() {
+
         new SignupLoginPage(driver)
                 .navigate()
                 .enterSignUpName(testData.getJsonData("name"))
                 .enterSignUpEmail(testData.getJsonData("email") + timestamp+"@gmail.com")
-                .clickSignUpButton()
+                .clickSignUpButton();
+
+        new SignupPage(driver)
                 .fillRegistrationForm(
                         testData.getJsonData("titleMale"),
                         testData.getJsonData("password"),
@@ -68,8 +70,11 @@ public class RegisterTest extends BaseTest {
                 testData.getJsonData("zipCode"),
                 testData.getJsonData("mobileNumber")
         ). verifyUserCreatedSuccessfully();
-
-
+        new SignupLoginPage(driver).navigate()
+                .enterSignUpName(testData.getJsonData("name"))
+                .enterSignUpEmail(testData.getJsonData("email") + timestamp+"@gmail.com")
+                .clickSignUpButton()
+                .verifySignUpErrorMsg(testData.getJsonData("messages.signUpErrorMsg"));
     }
 
 
