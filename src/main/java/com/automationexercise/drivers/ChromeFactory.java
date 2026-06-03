@@ -37,9 +37,9 @@ public class ChromeFactory extends AbstractDriver{
         options.addExtensions(extensions);
 
         switch (PropertyReader.getProperty("executionType").toLowerCase()) {
-            case "LocalHeadless" -> options.addArguments("--headless=new");
+            case "localheadless" -> options.addArguments("--headless=new");
 
-            case "Remote" -> {
+            case "remote" -> {
                 // Re-create options to remove extensions
                 options.addArguments("--disable-gpu");
                 options.addArguments("--disable-extensions");

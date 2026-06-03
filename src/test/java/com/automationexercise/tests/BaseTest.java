@@ -10,10 +10,7 @@ public class BaseTest implements WebDriverProvider {
     protected GUIDriver driver;
     protected JsonReader testData;
 
-    @BeforeClass
-    public void preCondition(){
-        testData = new JsonReader("register-data");
-    }
+
 
     @Override
     public WebDriver getWebDriver() {

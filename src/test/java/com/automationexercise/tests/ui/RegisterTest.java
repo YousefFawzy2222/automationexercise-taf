@@ -7,15 +7,24 @@ import com.automationexercise.pages.SignupPage;
 import com.automationexercise.pages.components.NavigationBarComponent;
 import com.automationexercise.tests.BaseTest;
 import com.automationexercise.utils.TimeManager;
+import com.automationexercise.utils.dataReader.JsonReader;
+import io.qameta.allure.*;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@Epic("Automation Exercise")
+@Feature("UI User Management")
+@Story("User Register")
+@Severity(SeverityLevel.CRITICAL)
+@Owner("Fawzy")
 public class RegisterTest extends BaseTest {
     String timestamp = TimeManager.getSimpleTimeStamp();
 
 
     //Tests
+    @Description("Verify that user can register successfully with valid data")
     @Test
     public void validSignUpTC() {
 
@@ -45,9 +54,15 @@ public class RegisterTest extends BaseTest {
                 )
                 .clickCreateAccountButton()
                 .verifyAccountCreated();
+        new UserManagementApi()
+                .deleteUserAccount(
+                        testData.getJsonData("email") + timestamp + "@gmail.com",
+                        testData.getJsonData("password"))
+                .verifyUserDeletedSuccessfully();
 
     }
 
+    @Description("Verify that user cannot register with email that already exists in the system")
     @Test
     public void verifyErrorMessageWhenAccountCreatedBefore() {
         //precondition > create a user Account
@@ -79,6 +94,10 @@ public class RegisterTest extends BaseTest {
 
 
     //Configurations
+    @BeforeClass
+    public void preCondition(){
+        testData = new JsonReader("register-data");
+    }
     @BeforeMethod
     public void beforeMethod() {
         driver = new GUIDriver(); //initialized our driver component

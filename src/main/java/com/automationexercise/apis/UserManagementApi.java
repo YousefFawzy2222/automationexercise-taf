@@ -69,13 +69,44 @@ public class UserManagementApi {
         return this;
     }
 
+    @Step("Create a new user account with minimal details")
+    public UserManagementApi createRegisterUserAccount(String name,
+                                                       String email,
+                                                       String pass,
+                                                       String firstName,
+                                                       String lastName
+                                                       ){
+        Map<String,String> formParams = new HashMap<>();
+        formParams.put("name", name);
+        formParams.put("email", email);
+        formParams.put("password", pass);
+        formParams.put("title", "Mr");
+        formParams.put("birth_date", "1");
+        formParams.put("birth_month", "January");
+        formParams.put("birth_year", "1990");
+        formParams.put("firstname", firstName);
+        formParams.put("lastname", lastName);
+        formParams.put("company", "company");
+        formParams.put("address1", "address1");
+        formParams.put("address2", "address2");
+        formParams.put("country", "India");
+        formParams.put("zipcode", "123456");
+        formParams.put("state", "state");
+        formParams.put("city", "city");
+        formParams.put("mobile_number", "12345678901");
+        response = requestSpecification.spec(Builder.getUserManagemenetRequestSpecification(formParams))
+                .post(createAccount_endpoint);
+        LogsManager.info(response.asPrettyString());
+        return this;
+    }
+
     @Step("Delete user account with email: {email}")
     public UserManagementApi deleteUserAccount(String email, String password){
         Map<String,String> formParams = new HashMap<>();
         formParams.put("email", email);
         formParams.put("password", password);
         response = requestSpecification.spec(Builder.getUserManagemenetRequestSpecification(formParams))
-                .post(deleteAccount_endpoint);
+                .delete(deleteAccount_endpoint);
         LogsManager.info(response.asPrettyString());
         return this;
     }

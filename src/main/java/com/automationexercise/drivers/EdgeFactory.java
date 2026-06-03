@@ -35,18 +35,15 @@ public class EdgeFactory extends AbstractDriver {
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         // Tells Selenium to continue once DOM is loaded, without waiting for all resources (faster tests)
 
-        options.addExtensions(extensions);
+        String executionType = PropertyReader.getProperty("executionType");
 
-        switch (PropertyReader.getProperty("executionType").toLowerCase()) {
-            case "LocalHeadless" -> options.addArguments("--headless=new");
+        if (executionType.equalsIgnoreCase("Local")) {
+            options.addExtensions(extensions);
+        }
 
-            case "Remote" -> {
-                // Re-create options to remove extensions
-                options.addArguments("--disable-gpu");
-                options.addArguments("--disable-extensions");
-                options.addArguments("--headless=new");
-            }
-
+        if (executionType.equalsIgnoreCase("LocalHeadless")) {
+            options.addArguments("--headless=new");
+            options.addArguments("--disable-extensions");
         }
         return options;
     }
