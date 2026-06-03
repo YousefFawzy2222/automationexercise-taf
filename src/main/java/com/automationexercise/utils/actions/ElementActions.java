@@ -3,6 +3,7 @@ package com.automationexercise.utils.actions;
 import com.automationexercise.utils.WaitManager;
 import com.automationexercise.utils.logs.LogsManager;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class ElementActions {
     }
 
     //Clicking
-    public void click(By locator){
+    public ElementActions click(By locator){
         waitBot
                 .fluentWait()
                 .until(d ->{ // lambda expression to click the element when it is ready to be clicked
@@ -33,10 +34,11 @@ public class ElementActions {
                     }
                 }
         ); //this until will return true if the element was clicked successfully within the 10 sec wait if not it returns false
+        return this;
     }
 
     //Typing
-    public void type(By locator, String text){
+    public ElementActions type(By locator, String text){
         waitBot
                 .fluentWait()
                 .until(d ->{
@@ -52,7 +54,7 @@ public class ElementActions {
                     }
                 }
                 );
-
+        return this;
     }
 
     //Getting Text
@@ -73,6 +75,25 @@ public class ElementActions {
         );
     }
 
+    //Hovering
+    public ElementActions hover(By locator){
+        waitBot
+                .fluentWait()
+                .until(d ->{
+                    try {
+                        WebElement element = d.findElement(locator);
+                        scrollToElementJS(locator);
+                        new Actions(d).moveToElement(element).perform();
+                        LogsManager.info("Hovered on Element: " + locator);
+                        return true;
+                    } catch (Exception e) {
+                        return false;
+                    }
+                }
+        );
+        return this;
+    }
+
     //Function to scroll to an element using js
     public void scrollToElementJS(By locator){
         ((JavascriptExecutor) driver)
@@ -86,7 +107,7 @@ public class ElementActions {
     }
 
     //upload file
-    public void uploadFile(By locator, String filePath){
+    public ElementActions uploadFile(By locator, String filePath){
         String fileAbsolute = System.getProperty("user.dir") + File.separator +filePath;
         waitBot
                 .fluentWait()
@@ -102,10 +123,11 @@ public class ElementActions {
                     }
                 }
         );
+        return this;
     }
 
     //select from dropdown
-    public void selectFromDropDown (By locator, String value){
+    public ElementActions selectFromDropDown (By locator, String value){
         waitBot.fluentWait().until(d ->{
            try {
                WebElement dropdown = d.findElement(locator);
@@ -118,6 +140,6 @@ public class ElementActions {
                return false;
            }
         });
+        return this;
     }
-
 }
