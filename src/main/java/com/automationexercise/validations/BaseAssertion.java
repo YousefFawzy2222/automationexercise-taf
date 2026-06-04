@@ -25,8 +25,9 @@ public abstract class BaseAssertion {
     protected abstract void assertFalse(boolean condition, String message);
     protected  abstract void assertEquals(Object actual, Object expected, String message);
 
-    public void Equals(String actual, String expected, String message){
+    public BaseAssertion Equals(String actual, String expected, String message){
         assertEquals(actual, expected, message);
+        return this;
     }
     public void isElementVisible(By locator){
         boolean flag = waitManager.fluentWait().until(driver1 ->{

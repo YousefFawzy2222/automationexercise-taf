@@ -22,7 +22,7 @@ public class ProductsDetailsTest extends BaseTest {
 
     //Tests
     @Test
-    public void verifyProductDetailsTC()
+    public void verifyProductDetailsWithoutLoginTC()
     {
         new ProductsPage(driver)
                 .navigate()
@@ -34,7 +34,7 @@ public class ProductsDetailsTest extends BaseTest {
     }
 
     @Test
-    public void verifyReviewMsgTC(){
+    public void verifyReviewMsgWithoutLoginTC(){
     new ProductsPage(driver)
             .navigate()
             .clickOnViewProduct(testData.getJsonData("product.productName"))
