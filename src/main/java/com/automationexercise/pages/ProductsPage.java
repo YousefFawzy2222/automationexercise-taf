@@ -57,8 +57,7 @@ public class ProductsPage {
 
     @Step("Click on add to cart for product: {productName}")
     public ProductsPage clickOnAddProduct(String productName){
-        driver.element().hover(hoverOnProduct(productName))
-                .click(addToCartButton(productName));
+        driver.element().click(addToCartButton(productName));
         return this;
     }
 

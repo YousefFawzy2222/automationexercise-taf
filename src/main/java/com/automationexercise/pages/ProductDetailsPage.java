@@ -23,7 +23,7 @@ public class ProductDetailsPage {
     private final By email = By.id("email");
     private final By reviewTextArea = By.id("review");
     private final By reviweButton = By.id("button-review");
-    private final By reviewMsg = By.cssSelector("#review-section span"); //Thank you for your review.
+    private final By reviewMsg = By.cssSelector("#review-section span");
 
     //Actions
     @Step("Navigate to product details page")

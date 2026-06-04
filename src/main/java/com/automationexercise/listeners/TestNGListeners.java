@@ -82,7 +82,7 @@ public class TestNGListeners implements IExecutionListener, IInvokedMethodListen
             AllureAttahcmentManager.attachLogs();
             AllureAttahcmentManager.attachRecords(testResult.getName());
 
-            Validation.assertAll();
+            Validation.assertAll(testResult);
         }
     }
 
