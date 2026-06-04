@@ -3,6 +3,7 @@ package com.automationexercise.pages;
 import com.automationexercise.drivers.GUIDriver;
 import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 
 public class ProductDetailsPage {
@@ -25,11 +26,13 @@ public class ProductDetailsPage {
     private final By reviewMsg = By.cssSelector("#review-section span"); //Thank you for your review.
 
     //Actions
+    @Step("Navigate to product details page")
     public ProductDetailsPage navigate(){
         driver.browser().navigateTo(PropertyReader.getProperty("baseUrlWeb") + productDetailsEndpoint);
         return this;
     }
 
+    @Step("Add review with name: {name}, email: {email} and review: {review}")
     public ProductDetailsPage addReview(String name, String email, String review){
         driver.element()
                 .type(this.name,name)
@@ -40,6 +43,7 @@ public class ProductDetailsPage {
     }
 
     //Validation
+    @Step("Verify product details: name = {name}, price = {price}")
     public ProductDetailsPage verifyProductDetails(String name, String price){
         String actualProductName = driver.element().getText(productName);
         String actualProductPrice = driver.element().getText(productPrice);
@@ -50,6 +54,7 @@ public class ProductDetailsPage {
         return this;
     }
 
+    @Step("Verify review message: {msg}")
     public ProductDetailsPage verifyReviewMsg(String msg){
         String actualReviewMsg = driver.element().getText(reviewMsg);
         LogsManager.info("Actual Review Message: " + actualReviewMsg);
