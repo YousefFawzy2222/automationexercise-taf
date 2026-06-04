@@ -4,7 +4,6 @@ import com.automationexercise.drivers.GUIDriver;
 import com.automationexercise.pages.ProductsPage;
 import com.automationexercise.pages.components.NavigationBarComponent;
 import com.automationexercise.tests.BaseTest;
-import com.automationexercise.utils.TimeManager;
 import com.automationexercise.utils.dataReader.JsonReader;
 import com.automationexercise.utils.dataReader.PropertyReader;
 import io.qameta.allure.*;
@@ -13,42 +12,35 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@Epic("Automation Exercise")
-@Feature("UI User Management")
-@Story("Products Management")
-@Severity(SeverityLevel.MINOR)
+@Epic("Cart Management")
+@Feature("UI Cart Details")
+@Story("Cart Details")
+@Severity(SeverityLevel.CRITICAL)
 @Owner("Fawzy")
-public class ProductsTest extends BaseTest {
+public class CartTest extends BaseTest {
 
     @Test
-    @Description("Search for a product and validate its details")
-    public void searchProductTC() {
-        new ProductsPage(driver)
-                .navigate()
-                .searchProduct(testData.getJsonData("searchProduct.productName"))
-                .validateProductDetails(
-                        testData.getJsonData("searchProduct.productName"),
-                        testData.getJsonData("searchProduct.productPrice")
-                );
-    }
-
-    @Test
-    @Description("Add a product to the cart without logging in")
-    public void addProductToCartWithoutLogin(){
+    public void verifyProductDetailsOnCart() {
         new ProductsPage(driver)
                 .navigate()
                 .clickOnAddProduct(testData.getJsonData("product.productName"))
-                .validateItemAddedLabel(testData.getJsonData("messages.cartAdded")
+                .validateItemAddedLabel(testData.getJsonData("messages.cartAdded"))
+                .clickOnViewCart()
+                .verifyProductDetailsOnCart(
+                        testData.getJsonData("product.productName"),
+                        testData.getJsonData("product.price"),
+                        testData.getJsonData("product.quantity"),
+                        testData.getJsonData("product.total")
                 );
+
     }
 
 
-    //Configurations
+    //Configuration
     @BeforeClass
     private void preCondition(){
-        testData = new JsonReader("products-data");
+        testData = new JsonReader("cart-data");
     }
-    //Configurations
     @BeforeMethod
     public void beforeMethod() {
         driver = new GUIDriver(); //initialized our driver component

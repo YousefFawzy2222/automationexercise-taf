@@ -5,6 +5,7 @@ import com.automationexercise.pages.components.NavigationBarComponent;
 import com.automationexercise.utils.dataReader.PropertyReader;
 import com.automationexercise.utils.logs.LogsManager;
 import io.qameta.allure.Step;
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 
 public class ProductsPage {
@@ -67,9 +68,9 @@ public class ProductsPage {
         return new ProductDetailsPage(driver);
     }
     @Step("Click on View Cart")
-    public ProductsPage clickOnViewCart(){
+    public CartPage clickOnViewCart(){
         driver.element().click(viewCartButton);
-        return this;
+        return new CartPage(driver);
     }
     //validations
     @Step("Validate product details")
