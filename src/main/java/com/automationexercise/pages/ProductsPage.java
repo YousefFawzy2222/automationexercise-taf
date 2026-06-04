@@ -16,28 +16,28 @@ public class ProductsPage {
         this.navigationBar = new NavigationBarComponent(driver);
     }
     //variable
-    private String productPage = "/products";
+    private String productPage = "products";
 
     //locators
     private final By searchField = By.id("search_product");
     private final By searchButton = By.id("submit_search");
-    private final By itemAddedLabel = By.cssSelector(".model-body > p");
+    private final By itemAddedLabel = By.cssSelector(".modal-body > p");
     private final By viewCartButton = By.cssSelector("p > [href='/view_cart']");
     private final By continueShoppingButton = By.cssSelector(".modal-footer > button");
 
     //dynamic locator
-    private By productName (String productName){
-        return By.xpath("//div[@class='overlay-content']/p[.='"+productName+"']");
+    private By productName(String productName){
+        return By.xpath("//div[@class='productinfo text-center']/p[normalize-space()='" + productName + "']");
     }
     private By productPrice(String productName){
-        return By.xpath("//div[@class='overlay-content']/p[.='"+productName+"'] //preceding-sibling::h2");
+        return By.xpath("//div[@class='productinfo text-center'][p[normalize-space()='" + productName + "']]/h2");
     }
 
     private By hoverOnProduct(String productName){
-        return By.xpath("//div[@class='productinfo text-center']/p[.='"+productName+"']");
+        return By.xpath("//div[@class='productinfo text-center'] /p[.='"+productName+"']");
     }
     private By addToCartButton(String productName){
-        return By.xpath("//div[@class='productinfo text-center']/p[.='"+productName+"'] //following-sibling::a");
+        return By.xpath("//div[@class='productinfo text-center'] /p[.='"+productName+"'] //following-sibling::a");
     }
     private By viewProduct(String productName){
         return By.xpath("//p[.='"+productName+"'] //following::div[@class='choose'][1]");
@@ -46,7 +46,7 @@ public class ProductsPage {
     //actions
     @Step("Navigate to products page")
     public ProductsPage navigate(){
-        driver.browser().navigateTo(PropertyReader.getProperty("baseUrl")+productPage);
+        driver.browser().navigateTo(PropertyReader.getProperty("baseUrlWeb")+productPage);
         return this;
     }
     @Step("Search for product: {productName}")
@@ -75,8 +75,8 @@ public class ProductsPage {
     //validations
     @Step("Validate product details")
     public ProductsPage validateProductDetails(String productName, String productPrice){
-        String actualProductName = driver.element().getText(productName(productName));
-        String actualProductPrice = driver.element().getText(productPrice(productName));
+        String actualProductName = driver.element().hover(productName(productName)).getText(productName(productName));
+        String actualProductPrice = driver.element().hover(productName(productName)).getText(productPrice(productName));
         LogsManager.info("Actual Product Name: " + actualProductName);
         LogsManager.info("Actual Product Price: " + actualProductPrice);
         driver.validation().Equals(actualProductName, productName, "Product name does not match");

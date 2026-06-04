@@ -26,6 +26,13 @@ public class ElementActions {
                     try {
                         WebElement element = d.findElement(locator);
                         scrollToElementJS(locator);
+                        //Wait until the element is stable (not moving)
+                        Point initialLocation =  element.getLocation();
+                        LogsManager.info("Element location before waiting: " + initialLocation);
+                        Point finalLocation = element.getLocation();
+                        LogsManager.info("Element Final Location: " + finalLocation);
+                        if (!initialLocation.equals(finalLocation))
+                            return false;
                         element.click();
                         LogsManager.info("Clicked on Element:" + locator);
                         return true;

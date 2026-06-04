@@ -31,15 +31,12 @@ public class AllureAttahcmentManager {
     }
     public static void attachLogs() {
         try {
-            LogManager.shutdown();
-            File logFile = new File(LogsManager.LOGS_PATH +  "logs.log");
-            // Restart Log4j configuration
-            LoggerContext context = (LoggerContext) LogManager.getContext(false);
-            context.reconfigure();
+            File logFile = new File(LogsManager.LOGS_PATH + "logs.log");
+
             if (logFile.exists()) {
                 Allure.attachment("logs.log", Files.readString(logFile.toPath()));
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LogsManager.error("Error attaching logs to Allure: " + e.getMessage());
         }
     }
