@@ -20,7 +20,7 @@ import org.testng.annotations.Test;
 public class CartTest extends BaseTest {
 
     @Test
-    public void verifyProductDetailsOnCart() {
+    public void verifyProductDetailsOnCartWithoutLoginTC() {
         new ProductsPage(driver)
                 .navigate()
                 .clickOnAddProduct(testData.getJsonData("product.productName"))
