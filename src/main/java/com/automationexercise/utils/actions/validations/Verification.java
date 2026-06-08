@@ -1,0 +1,34 @@
+package com.automationexercise.utils.actions.validations;
+
+import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+
+// Hard Assertion
+public class Verification extends BaseAssertion {
+    public Verification(WebDriver driver) {
+        super(driver);
+    }
+
+    public Verification() {
+        super();
+    }
+
+    @Override
+    protected void assertTrue(boolean condition, String message) {
+        Assert.assertTrue(condition, message);
+
+    }
+
+    @Override
+    protected void assertFalse(boolean condition, String message) {
+        Assert.assertFalse(condition, message);
+
+    }
+
+    @Override
+    public void assertEquals(Object actual, Object expected, String message) {
+        Assert.assertEquals(actual, expected, message);
+    }
+
+
+}

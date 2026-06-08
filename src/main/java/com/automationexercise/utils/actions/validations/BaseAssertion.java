@@ -1,0 +1,77 @@
+package com.automationexercise.utils.actions.validations;
+
+import com.automationexercise.utils.actions.FileUtils;
+import com.automationexercise.utils.actions.utils.WaitManager;
+import com.automationexercise.utils.actions.utils.actions.ElementActions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+// Parent
+public abstract class BaseAssertion {
+    protected WebDriver driver;
+    protected WaitManager waitManager;
+    protected ElementActions elementActions;
+
+    protected BaseAssertion(){
+
+    }
+
+    protected BaseAssertion(WebDriver driver) {
+        this.driver = driver;
+        this.waitManager = new WaitManager(driver);
+        this.elementActions = new ElementActions(driver);
+    }
+
+    protected abstract void assertTrue(boolean condition, String message);
+    protected abstract void assertFalse(boolean condition, String message);
+    protected  abstract void assertEquals(Object actual, Object expected, String message);
+
+    public BaseAssertion Equals(String actual, String expected, String message){
+        assertEquals(actual, expected, message);
+        return this;
+    }
+    public void isElementVisible(By locator){
+        boolean flag = waitManager.fluentWait().until(driver1 ->{
+            try{
+                driver1.findElement(locator).isDisplayed();
+                return true;
+            }
+            catch (Exception e){
+                return false;
+            }
+        });
+        assertTrue(flag, "Element is not visible: " + locator);
+    }
+    //verify page url
+    public void assertPageUrl(String expectedUrl){
+        String actualUrl = driver.getCurrentUrl();
+        assertEquals(actualUrl, expectedUrl, "Page URL mismatch. Expected: " + expectedUrl + ", Actual: " + actualUrl);
+    }
+    //verify element is visible
+    public void isElementNotVisible(By locator){
+        boolean flag = waitManager.fluentWait().until(driver1 ->{
+            try{
+                driver1.findElement(locator).isDisplayed();
+                return false;
+            }
+            catch (Exception e){
+                return true;
+            }
+        });
+        assertTrue(flag, "Element is visible: " + locator);
+    }
+    //verify page title
+    public void assertPageTitle(String expectedTitle){
+        String actualTitle = driver.getTitle();
+        assertEquals(actualTitle, expectedTitle, "Page title mismatch. Expected: " + expectedTitle + ", Actual: " + actualTitle);
+    }
+
+    //verify that file exists
+    public void assertFileExists(String fileName, String message){
+
+        waitManager.fluentWait().until(
+                d -> FileUtils.isFileExists(fileName)
+        );
+        assertTrue(FileUtils.isFileExists(fileName), message);
+    }
+}
