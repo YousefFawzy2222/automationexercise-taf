@@ -26,35 +26,35 @@ env:
   TARGET: "%regex[.*Tests.*],com.automationexercise.tests.**.**,com.automationexercise.tests.**"
 
 jobs:
-    Edge_Linux_Test:
-      runs-on: ubuntu-latest
-      permissions:
-        checks: write
-      steps:
-      #checkout means get the code from the repo
-        - name: checkout Code
-          uses: actions/checkout@v6
-          #Setup java
-        - name: Setup Java
-          uses: actions/setup-java@v5
-          with:
-            distribution: 'zulu' # See 'Supported distributions' for available options
-            java-version: '25'
-        #Setup maven
-        - name : setup maven
-          uses: stCarolas/setup-maven@v5
-          with:
-              maven-version:  3.9.14
-
-        - name: Running Tests
-          continue-on-error: true
-          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
-
-        - name: Upload Test Results
-          uses: actions/upload-artifact@v7
-          with:
-              name: Edge_Linux_Report
-              path: "test-output/reports/*.html"
+#    Edge_Linux_Test:
+#      runs-on: ubuntu-latest
+#      permissions:
+#        checks: write
+#      steps:
+#      #checkout means get the code from the repo
+#        - name: checkout Code
+#          uses: actions/checkout@v6
+#          #Setup java
+#        - name: Setup Java
+#          uses: actions/setup-java@v5
+#          with:
+#            distribution: 'zulu' # See 'Supported distributions' for available options
+#            java-version: '25'
+#        #Setup maven
+#        - name : setup maven
+#          uses: stCarolas/setup-maven@v5
+#          with:
+#              maven-version:  3.9.14
+#
+#        - name: Running Tests
+#          continue-on-error: true
+#          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
+#
+#        - name: Upload Test Results
+#          uses: actions/upload-artifact@v7
+#          with:
+#              name: Edge_Linux_Report
+#              path: "test-output/reports/*.html"
 
     Edge_Windows_Test:
       runs-on: windows-latest
