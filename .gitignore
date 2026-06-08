@@ -3,12 +3,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-test-output/allure-results/*
-test-output/full-report/*
-test-output/Logs/*
-test-output/recordings/*
-test-output/reports/*
-test-output/screenshots/*
 .idea/
 
 ### IntelliJ IDEA ###
