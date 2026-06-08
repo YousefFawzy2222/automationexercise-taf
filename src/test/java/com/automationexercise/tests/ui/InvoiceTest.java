@@ -3,28 +3,26 @@ package com.automationexercise.tests.ui;
 import com.automationexercise.apis.UserManagementApi;
 import com.automationexercise.drivers.GUIDriver;
 import com.automationexercise.drivers.UITest;
-import com.automationexercise.pages.CartPage;
-import com.automationexercise.pages.PaymentPage;
-import com.automationexercise.pages.ProductsPage;
-import com.automationexercise.pages.SignupLoginPage;
+import com.automationexercise.pages.*;
 import com.automationexercise.pages.components.NavigationBarComponent;
 import com.automationexercise.tests.BaseTest;
 import com.automationexercise.utils.TimeManager;
 import com.automationexercise.utils.dataReader.JsonReader;
 import com.automationexercise.utils.dataReader.PropertyReader;
 import io.qameta.allure.*;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 @Epic("Automation Exercise")
-@Feature("UI Invoice")
-@Story("Invoice")
+@Feature("UI Payment Management")
+@Story("Payment")
 @Severity(SeverityLevel.CRITICAL)
 @Owner("Fawzy")
 @UITest
-public class CheckoutTest extends BaseTest {
+public class InvoiceTest extends BaseTest {
     String timestamp = TimeManager.getSimpleTimeStamp();
 
-    //When we have a scenario like the checkout scenario u have to include dependencies to know if something went wrong where did it go wrong exactly
     @Test
     @Step("Register with a new account")
     public void registerNewAccount(){
@@ -96,7 +94,7 @@ public class CheckoutTest extends BaseTest {
                         testData.getJsonData("country"),
                         testData.getJsonData("mobileNumber")
 
-                        ).verifyBillingAddress(
+                ).verifyBillingAddress(
                         testData.getJsonData("titleMale"),
                         testData.getJsonData("firstName"),
                         testData.getJsonData("lastName"),
@@ -113,6 +111,27 @@ public class CheckoutTest extends BaseTest {
     }
 
     @Test(dependsOnMethods = {"loginToAccount", "registerNewAccount", "addProductToCart", "checkout"})
+    public void paymentTC(){
+        new CheckoutPage(driver)
+                .clickOnPlaceOrder()
+                .fillCardInfo(
+                        testData.getJsonData("cardInfo.cardName"),
+                        testData.getJsonData("cardInfo.cardNumber"),
+                        testData.getJsonData("cardInfo.cardCVC"),
+                        testData.getJsonData("cardInfo.cardMonth"),
+                        testData.getJsonData("cardInfo.cardYear")
+                )
+                .verifyPagePaymentSuccessMsg(testData.getJsonData("messages.SuccessPayment"));
+    }
+
+    @Test(dependsOnMethods = {"loginToAccount", "registerNewAccount", "addProductToCart", "checkout", "paymentTC"})
+    public void downloadInvoiceTC(){
+        new PaymentPage(driver)
+                .clickOnInvoiceButton()
+                .verifyDownloadFile(testData.getJsonData("invoiceName"));
+    }
+
+    @Test(dependsOnMethods = {"paymentTC","loginToAccount", "registerNewAccount", "addProductToCart", "checkout"})
     @Step("Delete the Account")
     public void deleteAccountAsPostCondition(){
         new UserManagementApi()
@@ -121,9 +140,10 @@ public class CheckoutTest extends BaseTest {
                         testData.getJsonData("password"))
                 .verifyUserDeletedSuccessfully();
     }
+
     @BeforeClass
     private void setUp(){
-        testData = new JsonReader("checkout-data");
+        testData = new JsonReader("payment-data");
         driver = new GUIDriver(); //initialized our driver component
         new NavigationBarComponent(driver).navigate(); //navigate to the base url
         if (PropertyReader.getProperty("executionType").equalsIgnoreCase("Local")) {

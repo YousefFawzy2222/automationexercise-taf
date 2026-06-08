@@ -42,9 +42,9 @@ public class CheckoutPage {
     }
 
     @Step("Click on Place order Button")
-    public OrderPage clickOnPlaceOrder(){
+    public PaymentPage clickOnPlaceOrder(){
         driver.element().click(placeOrderButton);
-        return new OrderPage(driver);
+        return new PaymentPage(driver);
 
     }
 

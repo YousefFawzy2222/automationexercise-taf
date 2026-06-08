@@ -1,6 +1,7 @@
 package com.automationexercise.tests.ui;
 
 import com.automationexercise.drivers.GUIDriver;
+import com.automationexercise.drivers.UITest;
 import com.automationexercise.pages.ProductsPage;
 import com.automationexercise.pages.components.NavigationBarComponent;
 import com.automationexercise.tests.BaseTest;
@@ -18,6 +19,7 @@ import org.testng.annotations.Test;
 @Story("Products Management")
 @Severity(SeverityLevel.MINOR)
 @Owner("Fawzy")
+@UITest
 public class ProductsTest extends BaseTest {
 
     @Test

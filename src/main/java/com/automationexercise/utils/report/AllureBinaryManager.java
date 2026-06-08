@@ -21,14 +21,20 @@ public class AllureBinaryManager {
         static final String VERSION = resolveVersion();
 
         // The function is mainly about opening Allure's github to find the latest version of allure to auto-download
+//        private static String resolveVersion() {
+//            try {
+//                String url = Jsoup.connect("https://github.com/allure-framework/allure2/releases/latest").followRedirects(true).execute().url().toString();
+//                return url.split("/tag/")[1];
+//            } catch (IOException e) {
+//                throw new RuntimeException("Failed to resolve Allure version: " + e.getMessage(), e);
+//            }
+//        }
+
         private static String resolveVersion() {
-            try {
-                String url = Jsoup.connect("https://github.com/allure-framework/allure2/releases/latest").followRedirects(true).execute().url().toString();
-                return url.split("/tag/")[1];
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to resolve Allure version: " + e.getMessage(), e);
-            }
-        }
+            return com.automationexercise.utils.dataReader.PropertyReader
+            .getProperty("allure.commandline.version");
+}
+
     }
 
     public static void downloadAndExtract() {
