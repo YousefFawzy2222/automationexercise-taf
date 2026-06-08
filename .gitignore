@@ -4,6 +4,14 @@ target/
 !**/src/test/**/target/
 .kotlin
 .idea/
+test-output/allure-results/history*
+test-output/allure-results/*
+test-output/full-report/*
+test-output/Logs/*
+test-output/recordings/*
+test-output/reports/*
+test-output/screenshots/*
+test-output/target
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
