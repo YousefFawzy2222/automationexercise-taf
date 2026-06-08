@@ -1,4 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"Verify that user cannot login with invalid email","6640","inValidLoginUsingInvalidEmailTC","Automation Exercise","2026-06-08","passed","2026-06-08","com.automationexercise.tests.ui.LoginTest","Surefire test","com.automationexercise.tests.ui.LoginTest","inValidLoginUsingInvalidEmailTC"
-"Verify that user can login successfully with valid credentials","5195","validLoginTC","Automation Exercise","2026-06-08","passed","2026-06-08","com.automationexercise.tests.ui.LoginTest","Surefire test","com.automationexercise.tests.ui.LoginTest","validLoginTC"
-"Verify that user cannot login with invalid password","3388","inValidLoginUsingInvalidPasswordTC","Automation Exercise","2026-06-08","passed","2026-06-08","com.automationexercise.tests.ui.LoginTest","Surefire test","com.automationexercise.tests.ui.LoginTest","inValidLoginUsingInvalidPasswordTC"
