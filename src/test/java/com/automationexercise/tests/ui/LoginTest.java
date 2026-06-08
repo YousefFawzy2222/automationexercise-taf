@@ -99,11 +99,11 @@ public class LoginTest extends BaseTest {
     }
 
 
+    //Configurations
     @BeforeClass
     private void preCondition(){
         testData = new JsonReader("login-data");
     }
-    //Configurations
     @BeforeMethod
     public void beforeMethod() {
         driver = new GUIDriver(); //initialized our driver component

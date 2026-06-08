@@ -16,8 +16,6 @@
   "state" : "California",
   "zipCode" : "12345",
   "country" : "United States",
-  "additionalInfo" : "This is a test account for automation purposes.",
-  "homePhone" : "1234567890",
   "mobileNumber" : "0987654321",
   "messages": {
     "signUpErrorMsg": "Email Address already exist!"

@@ -47,9 +47,9 @@ public class CartPage {
     }
 
     @Step("Click on Proceed To Checkout button")
-    public CartPage clickOnProceedToCheckOut(){
+    public CheckoutPage clickOnProceedToCheckOut(){
         driver.element().click(proceedToCheckoutButton);
-        return this;
+        return new CheckoutPage(driver);
     }
 
     @Step("Remove product: {productName}")

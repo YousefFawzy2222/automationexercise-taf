@@ -32,7 +32,6 @@ public class CartTest extends BaseTest {
                         testData.getJsonData("product.quantity"),
                         testData.getJsonData("product.total")
                 );
-
     }
 
 

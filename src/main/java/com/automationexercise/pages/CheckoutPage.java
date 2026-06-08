@@ -67,7 +67,7 @@ public class CheckoutPage {
                 .Equals(driver.element().getText(deliveryCompany), company, "Delivery Company Name is not matched")
                 .Equals(driver.element().getText(deliveryAddress1), address1, "Delivery address1 is not matched")
                 .Equals(driver.element().getText(deliveryAddress2), address2, "Delivery address2 is not matched")
-                .Equals(driver.element().getText(deliveryCityStateZipcode), (city + " "+state+" "+zipcode), "Delivery CitStateZipcode is not matched")
+                .Equals(driver.element().getText(deliveryCityStateZipcode), (zipcode + " " +city +" "+state), "Delivery CitStateZipcode is not matched")
                 .Equals(driver.element().getText(deliveryCountry), country, "Delivery Country Name is not matched")
                 .Equals(driver.element().getText(deliveryPhone), phone, "Delivery Phone Number is not matched");
         return this;
@@ -91,7 +91,7 @@ public class CheckoutPage {
                 .Equals(driver.element().getText(billingCompany), company, "Billing Company Name is not matched")
                 .Equals(driver.element().getText(billingAddress1), address1, "Billing address1 is not matched")
                 .Equals(driver.element().getText(billingAddress2), address2, "Billing address2 is not matched")
-                .Equals(driver.element().getText(billingCityStateZipcode), (city + " "+state+" "+zipcode), "Billing CitStateZipcode is not matched")
+                .Equals(driver.element().getText(billingCityStateZipcode), (zipcode + " " +city +" "+state), "Billing CitStateZipcode is not matched")
                 .Equals(driver.element().getText(billingCountry), country, "Billing Country Name is not matched")
                 .Equals(driver.element().getText(billingPhone), phone, "Billing Phone Number is not matched");
         return this;
