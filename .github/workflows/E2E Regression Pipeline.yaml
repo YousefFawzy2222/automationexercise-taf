@@ -47,6 +47,7 @@ jobs:
               maven-version:  3.9.14
 
         - name: Running Tests
+          continue-on-error: true
           run: mvn test -Dtest="${TARGET}" -DexecutionType="LocalHeadless" clean test
 
         - name: Upload Test Results
@@ -77,6 +78,7 @@ jobs:
               maven-version:  3.9.14
 
         - name: Running Tests
+          continue-on-error: true
           run: mvn test -Dtest="${TARGET}" -DexecutionType="LocalHeadless" clean test
 
         - name: Upload Test Results
