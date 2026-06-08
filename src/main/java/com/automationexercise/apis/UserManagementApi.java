@@ -101,27 +101,63 @@ public class UserManagementApi {
     }
 
     @Step("Delete user account with email: {email}")
-    public UserManagementApi deleteUserAccount(String email, String password){
-        Map<String,String> formParams = new HashMap<>();
+    public UserManagementApi deleteUserAccount(String email, String password) {
+        Map<String, String> formParams = new HashMap<>();
         formParams.put("email", email);
         formParams.put("password", password);
-        response = requestSpecification.spec(Builder.getUserManagemenetRequestSpecification(formParams))
+
+        response = requestSpecification
+                .spec(Builder.getUserManagemenetRequestSpecification(formParams))
                 .delete(deleteAccount_endpoint);
-        LogsManager.info(response.asPrettyString());
+
+        logResponse();
         return this;
     }
 
-    //Validations
     @Step("Verify that user is created successfully")
-    public UserManagementApi verifyUserCreatedSuccessfully(){
-        verification.Equals(response.jsonPath().get("message"), "User created!", "User creation failed. Expected message: 'User created!', but got: " + response.jsonPath().getString("message"));
+    public UserManagementApi verifyUserCreatedSuccessfully() {
+        String actualMessage = getResponseMessage();
+
+        verification.Equals(
+                actualMessage,
+                "User created!",
+                "User creation failed. Expected message: 'User created!', but got: " + actualMessage
+        );
+
         return this;
     }
 
     @Step("Verify that user is deleted successfully")
     public UserManagementApi verifyUserDeletedSuccessfully() {
-        verification.Equals(response.jsonPath().get("message"), "Account deleted!", "User deletion failed. Expected message: 'User deleted!', but got: " + response.jsonPath().getString("message"));
-        return this;
+        String actualMessage = getResponseMessage();
 
+        verification.Equals(
+                actualMessage,
+                "Account deleted!",
+                "User deletion failed. Expected message: 'Account deleted!', but got: " + actualMessage
+        );
+
+        return this;
+    }
+
+    private String getResponseMessage() {
+        String body = response.asString();
+
+        if (body == null || body.isBlank()) {
+            throw new AssertionError(
+                    "API response body is empty. Status code: "
+                            + response.statusCode()
+                            + ", content type: "
+                            + response.contentType()
+            );
+        }
+
+        return response.jsonPath().getString("message");
+    }
+
+    private void logResponse() {
+        LogsManager.info("API status code: " + response.statusCode());
+        LogsManager.info("API content type: " + response.contentType());
+        LogsManager.info("API response body: " + response.asString());
     }
 }

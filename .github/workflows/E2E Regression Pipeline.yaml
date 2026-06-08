@@ -48,7 +48,7 @@ jobs:
 
         - name: Running Tests
           continue-on-error: true
-          run: mvn test -Dtest="${TARGET}" -DexecutionType="LocalHeadless" clean test
+          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
 
         - name: Upload Test Results
           uses: actions/upload-artifact@v7
@@ -79,7 +79,7 @@ jobs:
 
         - name: Running Tests
           continue-on-error: true
-          run: mvn test -Dtest="${TARGET}" -DexecutionType="LocalHeadless" clean test
+          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
 
         - name: Upload Test Results
           uses: actions/upload-artifact@v7
