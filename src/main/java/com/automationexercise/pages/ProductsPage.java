@@ -28,17 +28,17 @@ public class ProductsPage {
 
     //dynamic locator
     private By productName(String productName){
-        return By.xpath("//div[@class='feature_items'] //div[@class='productinfo text-center']/p[normalize-space()='" + productName + "']");
+        return By.xpath("//div[@class='productinfo text-center']/p[normalize-space()='" + productName + "']");
     }
     private By productPrice(String productName){
-        return By.xpath("//div[@class='feature_items'] //div[@class='productinfo text-center'][p[normalize-space()='" + productName + "']]/h2");
+        return By.xpath("//div[@class='productinfo text-center'][p[normalize-space()='" + productName + "']]/h2");
     }
 
     private By hoverOnProduct(String productName){
-        return By.xpath("//div[@class='feature_items'] //div[@class='productinfo text-center'] /p[.='"+productName+"']");
+        return By.xpath("//div[@class='productinfo text-center'] /p[.='"+productName+"']");
     }
     private By addToCartButton(String productName){
-        return By.xpath("//div[@class='feature_items'] //div[@class='productinfo text-center'] /p[.='"+productName+"'] //following-sibling::a");
+        return By.xpath("//div[@class='productinfo text-center'] /p[.='"+productName+"'] //following-sibling::a");
     }
     private By viewProduct(String productName){
         return By.xpath("//p[.='"+productName+"'] //following::div[@class='choose'][1]");
