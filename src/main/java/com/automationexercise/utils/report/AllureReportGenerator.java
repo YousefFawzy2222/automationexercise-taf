@@ -31,6 +31,11 @@ public class AllureReportGenerator {
 
     //Open Allure report in browser
     public static void openReport(String reportFileName) {
+        if (System.getenv("CI") != null) {
+            LogsManager.info("CI environment detected. Skipping automatic report opening.");
+            return;
+        }
+
         if (!getProperty("executionType").toLowerCase().contains("local")) return;
 
         Path reportPath = AllureConstant.REPORT_PATH.resolve(reportFileName);
@@ -40,7 +45,6 @@ public class AllureReportGenerator {
             default ->
                     LogsManager.warn("Unsupported OS for opening Allure report automatically. Please open the report manually at: " + reportPath);
         }
-
     }
 
     // Copy history folder to results folder
