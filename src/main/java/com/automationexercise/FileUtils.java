@@ -95,30 +95,39 @@ public class FileUtils {
     }
 
     //Check if the file exists
-    public static boolean isFileExists(String path){
-        String downloadsPath = System.getProperty("user.dir") + File.separator + "src/test/resources/downloads/";
-        File file = new File(downloadsPath + path);
-        return file.exists();
+    public static boolean isFileExists(String fileName) {
+        return Files.exists(getDownloadsPath().resolve(fileName));
     }
 
     //check for file to be downloaded
-    public static boolean isFileExist(String fileName, int numberOfRetries){
-        boolean isFileExist= false;
-        int i =0;
-        while (i< numberOfRetries){
-            try{
-                String filePath = USER_DIR + "src/test/resources/downloads/";
-                isFileExist = (new File(filePath +fileName)).getAbsoluteFile().exists();
-            }catch (Exception e){
-                try{
-                    Thread.sleep(500);
-                }catch (Exception e1){
-                    LogsManager.error(e.getMessage());
-                }
+    public static boolean waitForFileToDownload(String fileName, int timeoutInSeconds) {
+        Path expectedFile = getDownloadsPath().resolve(fileName);
+        long endTime = System.currentTimeMillis() + timeoutInSeconds * 1000L;
+
+        while (System.currentTimeMillis() < endTime) {
+            if (Files.exists(expectedFile)) {
+                return true;
             }
-            i++;
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return false;
+            }
         }
-        return isFileExist;
+
+        return false;
+    }
+
+    public static Path getDownloadsPath() {
+        return Paths.get(
+                System.getProperty("user.dir"),
+                "src",
+                "test",
+                "resources",
+                "downloads"
+        ).toAbsolutePath();
     }
 
 

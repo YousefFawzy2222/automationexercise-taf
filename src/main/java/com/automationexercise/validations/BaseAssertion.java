@@ -68,9 +68,7 @@ public abstract class BaseAssertion {
     }
 
     //verify that file exists
-    public void assertFileExists(String fileName, String message){
-
-        boolean fileExists = FileUtils.isFileExist(fileName, 3);
-        assertTrue(FileUtils.isFileExists(fileName), message);
+    public void assertFileExists(String fileName, String message) {
+        assertTrue(FileUtils.waitForFileToDownload(fileName, 30), message);
     }
 }

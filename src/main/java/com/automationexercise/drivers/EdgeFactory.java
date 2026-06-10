@@ -11,13 +11,17 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class EdgeFactory extends AbstractDriver {
-    private EdgeOptions getOptions() {
+    private EdgeOptions getOptions(){
         EdgeOptions options = new EdgeOptions();
         options.addArguments("--remote-allow-origins=*");
         options.addArguments("--disable-notifications");
@@ -25,11 +29,24 @@ public class EdgeFactory extends AbstractDriver {
         options.addArguments("--disable-infobars");
         options.addArguments("--start-maximized");
         Map<String, Object> prefs = new HashMap<>();
-        String userDir = System.getProperty("user.dir");
-        String downloadPath = userDir + "\\src\\test\\resources\\downloads";
+        Path downloadPath = Paths.get(
+                System.getProperty("user.dir"),
+                "src",
+                "test",
+                "resources",
+                "downloads"
+        ).toAbsolutePath();
+
+        try {
+            Files.createDirectories(downloadPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         prefs.put("profile.default_content_settings.popups", 0);
         prefs.put("download.prompt_for_download", false);
-        prefs.put("download.default_directory",downloadPath);
+        prefs.put("download.default_directory", downloadPath.toString());
+        prefs.put("download.directory_upgrade", true);
+        prefs.put("safebrowsing.enabled", true);
         options.setExperimentalOption("prefs", prefs);
         options.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.IGNORE);
         options.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
