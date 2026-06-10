@@ -1,131 +1,89 @@
 name: E2e Regression
-
+#Run when there is a push, pull request on main
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
+  # * * * * *	Every minute
+  # 0 * * * *	Every hour
+  # 0 0 * * *	Every day at 12:00 AM
+  # 0 0 * * FRI	At 12:00 AM, only on Friday
+  # 0 0 1 * *	At 12:00 AM, on day 1 of the month
 
+  # Minutes (0-59)
+  # Hour (0-23) -> utc
+  # Day of Month (1-31 or JANN-DEC)
+  # Day of Week (0-7 or SUN-SAT, where both 0 and 7 are Sunday)
   schedule:
     - cron: '00 23 * * *'
-
+  #this line below means that i can also trigger jobs manually
   workflow_dispatch:
 
 env:
   TARGET: "%regex[.*Tests.*],com.automationexercise.tests.**.**,com.automationexercise.tests.**"
 
 jobs:
-  Edge_Linux_Test:
-    runs-on: ubuntu-latest
+    Edge_Linux_Test:
+      runs-on: ubuntu-latest
+      permissions:
+        checks: write
+      steps:
+      #checkout means get the code from the repo
+        - name: checkout Code
+          uses: actions/checkout@v6
+          #Setup java
+        - name: Setup Java
+          uses: actions/setup-java@v5
+          with:
+            distribution: 'zulu' # See 'Supported distributions' for available options
+            java-version: '25'
+        #Setup maven
+        - name : setup maven
+          uses: stCarolas/setup-maven@v5
+          with:
+              maven-version:  3.9.14
 
-    permissions:
-      checks: write
+        - name: Running Tests
+          continue-on-error: true
+          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
+        - name: Upload Test Results
+          uses: actions/upload-artifact@v7
+          with:
+              name: Edge_Linux_Report
+              path: "test-output/reports/*.html"
 
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'zulu'
-          java-version: '25'
+    Edge_Windows_Test:
+      runs-on: windows-latest
+      #depends-on: -> to add a dependency for sequential execution
+      permissions:
+        checks: write
+      steps:
+      #checkout means get the code from the repo
+        - name: checkout Code
+          uses: actions/checkout@v6
+          #Setup java
+        - name: Setup Java
+          uses: actions/setup-java@v5
+          with:
+            distribution: 'zulu' # See 'Supported distributions' for available options
+            java-version: '25'
+        #Setup maven
+        - name : setup maven
+          uses: stCarolas/setup-maven@v5
+          with:
+              maven-version:  3.9.14
 
-      - name: Setup Maven
-        uses: stCarolas/setup-maven@v5
-        with:
-          maven-version: 3.9.14
+        - name: Running Tests
+          continue-on-error: true
+          run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
 
-      - name: Prepare Download Directory
-        run: mkdir -p src/test/resources/downloads
+        - name: Upload Test Results
+          uses: actions/upload-artifact@v7
+          with:
+            name: Edge_Windows_Report
+            path: "test-output/reports/*.html"
 
-      - name: Running Tests
-        id: linux_tests
-        continue-on-error: true
-        run: mvn clean test -Dtest="${TARGET}" -DexecutionType="LocalHeadless"
-
-      - name: Show Test Output Files
-        if: always()
-        run: |
-          pwd
-          find test-output -maxdepth 5 -type f || true
-          echo "Downloaded files:"
-          find src/test/resources/downloads -maxdepth 2 -type f || true
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: Edge_Linux_Report
-          path: |
-            test-output/reports/*.html
-            test-output/full-report/**
-            test-output/allure-results/**
-            test-output/target/surefire-reports/**
-            src/test/resources/downloads/**
-          if-no-files-found: warn
-
-      - name: Fail Job If Tests Failed
-        if: steps.linux_tests.outcome == 'failure'
-        run: exit 1
-
-  Edge_Windows_Test:
-    runs-on: windows-latest
-
-    permissions:
-      checks: write
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'zulu'
-          java-version: '25'
-
-      - name: Setup Maven
-        uses: stCarolas/setup-maven@v5
-        with:
-          maven-version: 3.9.14
-
-      - name: Prepare Download Directory
-        shell: powershell
-        run: New-Item -ItemType Directory -Force -Path src/test/resources/downloads
-
-      - name: Running Tests
-        id: windows_tests
-        continue-on-error: true
-        shell: powershell
-        run: mvn clean test -Dtest="${env:TARGET}" -DexecutionType="LocalHeadless"
-
-      - name: Show Test Output Files
-        if: always()
-        shell: powershell
-        run: |
-          Get-Location
-          Get-ChildItem -Path test-output -Recurse -File -ErrorAction SilentlyContinue
-          Write-Host "Downloaded files:"
-          Get-ChildItem -Path src/test/resources/downloads -Recurse -File -ErrorAction SilentlyContinue
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: Edge_Windows_Report
-          path: |
-            test-output/reports/*.html
-            test-output/full-report/**
-            test-output/allure-results/**
-            test-output/target/surefire-reports/**
-            src/test/resources/downloads/**
-          if-no-files-found: warn
-
-      - name: Fail Job If Tests Failed
-        if: steps.windows_tests.outcome == 'failure'
-        shell: powershell
-        run: exit 1
