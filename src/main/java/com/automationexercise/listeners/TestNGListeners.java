@@ -72,7 +72,7 @@ public class TestNGListeners implements ISuiteListener,IExecutionListener, IInvo
         WebDriver driver = null;
 
         if (method.isTestMethod()) {
-            if(testResult.getInstance() instanceof UITest){ //DON'T RECORD OR SCREENSHOT UNLESS ITS AN INSTANCE OF UITest annotation
+            if(testResult.getInstance().getClass().isAnnotationPresent(UITest.class)){ //DON'T RECORD OR SCREENSHOT UNLESS ITS AN INSTANCE OF UITest annotation
                 if (testResult.getInstance() instanceof WebDriverProvider provider) {
                     driver = provider.getWebDriver();
                 }
